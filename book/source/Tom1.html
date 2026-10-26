@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<title>AI для .NET-розробника — Том 1</title>
+<style>
+@page { size: A4; margin: 20mm 18mm; }
+body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1b1b1b; }
+h1 { font-size: 24pt; color: #0b3d91; border-bottom: 3px solid #0b3d91; padding-bottom: 6px; page-break-before: always; }
+h1.first { page-break-before: auto; }
+h2 { font-size: 15pt; color: #0b3d91; margin-top: 22px; }
+h3 { font-size: 12pt; color: #333; }
+code, pre { font-family: Consolas, monospace; font-size: 9.5pt; }
+code { background: #eef1f6; padding: 1px 4px; border-radius: 3px; }
+pre { background: #f4f6fa; border-left: 4px solid #0b3d91; padding: 8px 10px; white-space: pre-wrap; page-break-inside: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; page-break-inside: avoid; }
+th, td { border: 1px solid #b9c2d3; padding: 5px 8px; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #e3e9f5; }
+.box { background: #fff8e1; border-left: 4px solid #f0a500; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.tip { background: #e8f6ec; border-left: 4px solid #2e9e50; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.task { background: #eaf2ff; border-left: 4px solid #0b3d91; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.cover { text-align: center; margin-top: 90mm; }
+.cover h1 { border: none; font-size: 32pt; page-break-before: auto; }
+</style></head><body>
+
+<div class="cover">
+<h1 class="first">AI для .NET-розробника</h1>
+<p style="font-size:16pt">Підручник від А до Я</p>
+<p style="font-size:13pt">Том 1 · Частина I «Основи» · Розділи 1–3</p>
+</div>
+
+<h1>Навчальний план (зміст усього підручника)</h1>
+<p>Підручник розрахований на новачка зі стеком .NET (C#, ASP.NET Core, Visual Studio / VS Code / Rider). Кожен том містить 2–3 розділи. Після кожного розділу є практичні завдання.</p>
+
+<table>
+<tr><th>Том</th><th>Розділи</th><th>Тема</th></tr>
+<tr><td rowspan="3"><b>1</b><br>Основи</td><td>1</td><td>Що таке AI-асистент і велика мовна модель (LLM)</td></tr>
+<tr><td>2</td><td>Словник: токени, контекст, промпт, temperature, галюцинації, RAG тощо</td></tr>
+<tr><td>3</td><td>Ландшафт інструментів: Copilot, ChatGPT, Claude, Gemini, Cursor, моделі та тарифи</td></tr>
+<tr><td rowspan="3"><b>2</b><br>Промпти й Copilot</td><td>4</td><td>Промпт-інжиніринг: як формулювати запити для коду</td></tr>
+<tr><td>5</td><td>GitHub Copilot у Visual Studio / VS Code для .NET: автодоповнення, Chat, режими Ask / Edit / Agent</td></tr>
+<tr><td>6</td><td>Керування контекстом: #file, @workspace, #codebase, історія чату</td></tr>
+<tr><td rowspan="3"><b>3</b><br>Налаштування й файли</td><td>7</td><td>MD-файли інструкцій: <code>copilot-instructions.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>*.instructions.md</code></td></tr>
+<tr><td>8</td><td>Prompt files (<code>*.prompt.md</code>) і Skills (<code>SKILL.md</code>)</td></tr>
+<tr><td>9</td><td>Custom agents (<code>*.agent.md</code>), режими, hooks, дозволи</td></tr>
+<tr><td rowspan="3"><b>4</b><br>Агенти й MCP</td><td>10</td><td>MCP (Model Context Protocol): сервери, інструменти, безпека</td></tr>
+<tr><td>11</td><td>Агентна робота: tool calling, Copilot CLI, автономність, субагенти</td></tr>
+<tr><td>12</td><td>Cloud agent: задачі через issue, PR, CI</td></tr>
+<tr><td rowspan="3"><b>5</b><br>Практика .NET</td><td>13</td><td>Тести, рефакторинг, міграції, документація з AI</td></tr>
+<tr><td>14</td><td>Рев'ю коду, безпека, ліцензії, приватність</td></tr>
+<tr><td>15</td><td>Свої AI-застосунки на .NET: Microsoft.Extensions.AI, Azure OpenAI, Semantic Kernel</td></tr>
+<tr><td><b>6</b></td><td>Додатки</td><td>Глосарій, шпаргалка, типові помилки, чекліст проєкту</td></tr>
+</table>
+
+<div class="tip"><b>Як працювати:</b> читайте том, виконуйте завдання на власному невеликому .NET-проєкті (наприклад, Web API «список справ»). Після тому напишіть «наступний том» — і ми продовжимо.</div>
+
+<!-- ============ ROZDIL 1 ============ -->
+<h1>Розділ 1. Що таке AI-асистент і LLM</h1>
+
+<h2>1.1. Коротко про суть</h2>
+<p><b>LLM (Large Language Model, велика мовна модель)</b> — нейромережа, навчена на величезних обсягах тексту і коду. Її базова задача: <i>передбачити наступний фрагмент тексту (токен)</i> з огляду на попередній. Звідси здатність писати код, пояснювати, перекладати, підсумовувати.</p>
+<p><b>AI-асистент</b> — програма-обгортка навколо LLM: вікно чату, інтеграція в IDE, доступ до ваших файлів, інструменти (термінал, пошук, запуск тестів). GitHub Copilot, ChatGPT, Claude Code — це асистенти, а GPT, Claude, Gemini — моделі всередині.</p>
+
+<table>
+<tr><th>Рівень</th><th>Що це</th><th>Приклад</th></tr>
+<tr><td>Модель</td><td>«Мозок», що генерує текст</td><td>GPT-5, Claude Sonnet, Gemini</td></tr>
+<tr><td>Асистент / продукт</td><td>Інтерфейс + інструменти + налаштування</td><td>GitHub Copilot, ChatGPT, Cursor</td></tr>
+<tr><td>Ваші налаштування</td><td>Інструкції, skills, MCP для вашого проєкту</td><td><code>copilot-instructions.md</code></td></tr>
+</table>
+
+<h2>1.2. Як це працює (спрощено)</h2>
+<ol>
+<li>Ваш текст розбивається на <b>токени</b> (шматки слів).</li>
+<li>Модель на основі токенів обчислює ймовірності наступного токена і вибирає один.</li>
+<li>Процес повторюється, поки відповідь не завершена.</li>
+</ol>
+<p>Важливо: модель <b>не «знає» факти, як база даних</b>. Вона відтворює правдоподібні патерни. Тому вона може упевнено помилятися — це називають <b>галюцинацією</b>.</p>
+
+<h2>1.3. Три покоління роботи з AI</h2>
+<table>
+<tr><th>Режим</th><th>Опис</th><th>Приклад у .NET</th></tr>
+<tr><td>Автодоповнення</td><td>Підказує наступний рядок/блок під час набору</td><td>Пишете <code>public async Task&lt;</code> — Copilot пропонує продовження</td></tr>
+<tr><td>Чат (Ask)</td><td>Ви ставите питання, отримуєте відповідь</td><td>«Поясни, чому тут NullReferenceException»</td></tr>
+<tr><td>Агент (Agent)</td><td>Сам читає файли, редагує, запускає <code>dotnet build/test</code>, виправляє помилки</td><td>«Додай ендпоінт DELETE /todos/{id} і тест до нього»</td></tr>
+</table>
+
+<h2>1.4. Що AI робить добре, а що погано</h2>
+<table>
+<tr><th>Добре</th><th>Погано / ризиковано</th></tr>
+<tr><td>Шаблонний код (CRUD, DTO, мапінг)</td><td>Нові/рідкісні API та версії бібліотек (може вигадати метод)</td></tr>
+<tr><td>Юніт-тести, регулярні вирази, SQL/LINQ</td><td>Складна архітектурна відповідальність без чіткого контексту</td></tr>
+<tr><td>Пояснення чужого коду, рефакторинг</td><td>Безпека: може згенерувати вразливий код</td></tr>
+<tr><td>Документація, коментарі, commit-повідомлення</td><td>Точні обчислення, свіжі новини без пошуку</td></tr>
+</table>
+
+<div class="box"><b>Золоте правило:</b> AI — це швидкий молодший колега-стажист. Ви відповідаєте за результат: завжди читайте, збирайте (<code>dotnet build</code>) і тестуйте (<code>dotnet test</code>) те, що він написав.</div>
+
+<div class="task"><b>Завдання 1.</b>
+<ol>
+<li>Створіть проєкт: <code>dotnet new webapi -n TodoApi</code>.</li>
+<li>Попросіть будь-який чат: «Поясни структуру цього проєкту для новачка» і вставте вміст <code>Program.cs</code>.</li>
+<li>Знайдіть у відповіді хоча б одну неточність або спрощення. Це тренує критичне мислення.</li>
+</ol></div>
+
+<!-- ============ ROZDIL 2 ============ -->
+<h1>Розділ 2. Словник: терміни, які потрібно знати</h1>
+<p>Це найважливіший розділ-довідник. Повернутися до нього можна в будь-який момент; повний глосарій буде в додатках.</p>
+
+<h2>2.1. Базові поняття моделі</h2>
+<table>
+<tr><th>Термін</th><th>Пояснення</th></tr>
+<tr><td><b>Токен</b></td><td>Одиниця тексту для моделі (≈ 3–4 англ. символи; українська й код «дорожчі» — більше токенів). Ціна й ліміти рахуються в токенах.</td></tr>
+<tr><td><b>Контекстне вікно (context window)</b></td><td>Максимум токенів, які модель «бачить» за раз: ваш запит + історія + файли + відповідь. Вийшло за межу — старе забувається або обрізається.</td></tr>
+<tr><td><b>Промпт (prompt)</b></td><td>Вхідний текст-запит до моделі.</td></tr>
+<tr><td><b>Системний промпт (system prompt)</b></td><td>Приховані/базові інструкції, що задають роль і правила моделі («Ти асистент-програміст…»). Файли інструкцій розширюють саме цей рівень.</td></tr>
+<tr><td><b>Completion / відповідь</b></td><td>Те, що згенерувала модель.</td></tr>
+<tr><td><b>Temperature</b></td><td>«Креативність»: 0 — передбачувано й стабільно, вище — різноманітніше. Для коду зазвичай низька.</td></tr>
+<tr><td><b>Top-p / top-k</b></td><td>Інші способи обмежити вибір наступного токена.</td></tr>
+<tr><td><b>Max tokens</b></td><td>Ліміт довжини відповіді.</td></tr>
+<tr><td><b>Галюцинація</b></td><td>Правдоподібна, але хибна відповідь (вигаданий метод <code>List.RemoveDuplicates()</code>).</td></tr>
+<tr><td><b>Knowledge cutoff</b></td><td>Дата, до якої модель мала навчальні дані. Нові версії .NET можуть бути їй невідомі.</td></tr>
+<tr><td><b>Мультимодальність</b></td><td>Модель працює не лише з текстом, а й із зображеннями (скріншот UI → код).</td></tr>
+<tr><td><b>Reasoning / «thinking» модель</b></td><td>Модель, що «міркує» перед відповіддю: повільніша й дорожча, але краща для складних задач.</td></tr>
+<tr><td><b>Fine-tuning</b></td><td>Донавчання моделі на своїх даних. Для звичайного розробника зазвичай не потрібне.</td></tr>
+<tr><td><b>Embedding</b></td><td>Числовий вектор, що представляє зміст тексту; основа семантичного пошуку.</td></tr>
+</table>
+
+<h2>2.2. Терміни роботи з контекстом і знаннями</h2>
+<table>
+<tr><th>Термін</th><th>Пояснення</th></tr>
+<tr><td><b>Контекст (context)</b></td><td>Усе, що ви надали моделі: файли, виділений код, історія чату, інструкції.</td></tr>
+<tr><td><b>Grounding</b></td><td>«Заземлення» відповіді на реальних даних (ваш код, документація), щоб зменшити вигадки.</td></tr>
+<tr><td><b>RAG</b> (Retrieval-Augmented Generation)</td><td>Спершу знайти релевантні фрагменти (пошук по embeddings), потім додати їх у промпт.</td></tr>
+<tr><td><b>Vector database</b></td><td>Сховище embeddings для семантичного пошуку.</td></tr>
+<tr><td><b>Chunking</b></td><td>Розбиття великих документів на шматки для індексації.</td></tr>
+<tr><td><b>Compaction / summarization</b></td><td>Стиснення довгої історії в короткий підсумок, коли контекст майже заповнений.</td></tr>
+</table>
+
+<h2>2.3. Терміни промптингу</h2>
+<table>
+<tr><th>Термін</th><th>Пояснення</th></tr>
+<tr><td><b>Zero-shot</b></td><td>Запит без прикладів.</td></tr>
+<tr><td><b>Few-shot</b></td><td>Запит з 1–3 прикладами очікуваного формату.</td></tr>
+<tr><td><b>Chain-of-thought</b></td><td>Прохання міркувати крок за кроком.</td></tr>
+<tr><td><b>Role prompting</b></td><td>«Ти — досвідчений .NET-архітектор…»</td></tr>
+<tr><td><b>Structured output</b></td><td>Відповідь у суворому форматі (JSON за схемою).</td></tr>
+<tr><td><b>Prompt injection</b></td><td>Атака: шкідливий текст у даних (файл, веб-сторінка) намагається «перепрограмувати» модель. Дуже важливо для агентів.</td></tr>
+</table>
+
+<h2>2.4. Терміни агентів і екосистеми (огляд — детально в розділах 7–12)</h2>
+<table>
+<tr><th>Термін</th><th>Пояснення</th></tr>
+<tr><td><b>Agent (агент)</b></td><td>LLM, що в циклі «думає → викликає інструмент → дивиться результат → продовжує», доки задача не виконана.</td></tr>
+<tr><td><b>Tool / function calling</b></td><td>Механізм, у якому модель просить виконати функцію (прочитати файл, <code>dotnet test</code>), а програма виконує й повертає результат.</td></tr>
+<tr><td><b>MCP</b> (Model Context Protocol)</td><td>Відкритий стандарт підключення зовнішніх інструментів і даних (GitHub, БД, браузер) до будь-якого AI-клієнта. «USB-C для AI».</td></tr>
+<tr><td><b>Custom instructions</b></td><td>Постійні правила для проєкту в <code>.md</code>-файлах (стиль коду, команди збірки).</td></tr>
+<tr><td><b>Skill</b></td><td>Папка з <code>SKILL.md</code> і ресурсами — «навичка», яку агент підвантажує, коли задача підходить за описом.</td></tr>
+<tr><td><b>Prompt file</b></td><td>Збережений багаторазовий промпт (<code>*.prompt.md</code>), що викликається командою <code>/назва</code>.</td></tr>
+<tr><td><b>Custom agent / chat mode</b></td><td>Персона з власними інструкціями й набором дозволених інструментів (рев'юер, архітектор).</td></tr>
+<tr><td><b>Субагент (subagent)</b></td><td>Допоміжний агент, якому основний делегує підзадачу в окремому контексті.</td></tr>
+<tr><td><b>Hooks</b></td><td>Скрипти, що спрацьовують у певні моменти (перед запуском інструмента, після редагування) — для контролю й автоматизації.</td></tr>
+<tr><td><b>Human-in-the-loop</b></td><td>Людина підтверджує небезпечні дії (запуск команд, запис файлів).</td></tr>
+<tr><td><b>Autopilot / auto-approve</b></td><td>Агент виконує дії без запитів. Швидко, але ризиковано.</td></tr>
+<tr><td><b>Premium request / квота</b></td><td>Облікова одиниця у Copilot: складні моделі й агентні режими споживають більше.</td></tr>
+</table>
+
+<div class="tip"><b>Практичний висновок:</b> якість відповіді = якість моделі × якість контексту × якість інструкцій. Далі в підручнику ми вчимося керувати двома останніми множниками.</div>
+
+<div class="task"><b>Завдання 2.</b> Без підглядання поясніть своїми словами: чим відрізняється токен від слова; чому довга розмова може «забути» початок; чим skill відрізняється від MCP-сервера (підказка: skill — знання/інструкція, MCP — доступ до зовнішніх дій і даних).</div>
+
+<!-- ============ ROZDIL 3 ============ -->
+<h1>Розділ 3. Ландшафт інструментів</h1>
+<p><i>Примітка: ринок змінюється щомісяця; назви моделей і тарифи уточнюйте на офіційних сайтах.</i></p>
+
+<h2>3.1. Типи інструментів</h2>
+<table>
+<tr><th>Тип</th><th>Приклади</th><th>Коли використовувати</th></tr>
+<tr><td>Асистент у IDE</td><td>GitHub Copilot (Visual Studio, VS Code, Rider), JetBrains AI Assistant, Cursor</td><td>Щоденне кодування</td></tr>
+<tr><td>Веб-чат</td><td>ChatGPT, Claude, Gemini, Microsoft Copilot</td><td>Питання, навчання, чернетки, аналіз</td></tr>
+<tr><td>Термінальні агенти</td><td>GitHub Copilot CLI, Claude Code, Codex CLI</td><td>Багатокрокові задачі над репозиторієм</td></tr>
+<tr><td>Хмарні агенти</td><td>Copilot cloud agent (issue → PR), Codex cloud</td><td>Фонові задачі, що закінчуються Pull Request</td></tr>
+<tr><td>API / SDK</td><td>Azure OpenAI, OpenAI, Anthropic, Microsoft.Extensions.AI</td><td>Вбудовування AI у власний застосунок</td></tr>
+</table>
+
+<h2>3.2. Що обрати .NET-розробнику-новачку</h2>
+<ul>
+<li><b>Основний інструмент:</b> GitHub Copilot — глибока інтеграція з Visual Studio і VS Code, підтримка кількох моделей, агентний режим, MCP, інструкції та skills.</li>
+<li><b>Для навчання й консультацій:</b> один веб-чат (ChatGPT / Claude / Gemini) на ваш смак.</li>
+<li><b>Пізніше:</b> Copilot CLI та cloud agent для автоматизації.</li>
+</ul>
+
+<h2>3.3. Різні моделі — різні сильні сторони</h2>
+<table>
+<tr><th>Клас моделі</th><th>Характеристика</th><th>Використання</th></tr>
+<tr><td>Швидкі / «mini», «flash», «haiku»</td><td>Дешеві, швидкі, простіші</td><td>Автодоповнення, дрібні правки, пояснення</td></tr>
+<tr><td>Універсальні «стандартні»</td><td>Баланс ціни й якості</td><td>Основна робота, агентні задачі</td></tr>
+<tr><td>Reasoning / «max»</td><td>Повільні, дорогі, глибше міркують</td><td>Складні баги, архітектура, великі рефакторинги</td></tr>
+</table>
+<p>Правило: починайте зі стандартної моделі, ускладнюйте лише коли вона не справляється. У Copilot модель обирається у випадаючому списку чату; режим <b>Auto</b> підбирає її за вас.</p>
+
+<h2>3.4. Ваш перший робочий цикл у Copilot</h2>
+<ol>
+<li>Встановіть Visual Studio 2022+ (або VS Code з C# Dev Kit) і увійдіть під GitHub-акаунтом із Copilot.</li>
+<li>Відкрийте <code>TodoApi</code>. Відкрийте вікно <b>Copilot Chat</b>.</li>
+<li>Виділіть код у <code>Program.cs</code> і спитайте: «Explain».</li>
+<li>Попросіть: «Додай модель <code>TodoItem</code> (Id, Title, IsDone) та мінімальні ендпоінти CRUD у пам'яті».</li>
+<li>Перевірте: <code>dotnet build</code>, запустіть, випробуйте через Swagger/.http-файл.</li>
+</ol>
+
+<h2>3.5. Безпека з першого дня</h2>
+<ul>
+<li>Не вставляйте в чат паролі, ключі API, рядки підключення, персональні дані.</li>
+<li>Секрети тримайте в User Secrets / Key Vault, не в коді — AI має це знати (пропишемо в інструкціях, розділ 7).</li>
+<li>Перевіряйте, чи дозволяє ваш роботодавець використання AI з кодом проєкту.</li>
+<li>Перевіряйте залежності, які пропонує AI: пакет має існувати у NuGet і бути надійним.</li>
+</ul>
+
+<div class="task"><b>Завдання 3.</b>
+<ol>
+<li>Виконайте цикл із 3.4 на <code>TodoApi</code>.</li>
+<li>Зробіть одне й те саме завдання двома різними моделями (або чатами) і порівняйте код та пояснення.</li>
+<li>Запишіть у нотатки: які 3 терміни з розділу 2 були для вас новими.</li>
+</ol></div>
+
+<div class="box"><b>Далі — Том 2:</b> розділи 4–6 — як правильно формулювати запити, працювати з Copilot у Visual Studio та керувати контекстом.</div>
+
+</body></html>

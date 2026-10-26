@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>AI для .NET — Том 6</title><link rel="stylesheet" href="style.css"></head><body>
+<div class="cover"><h1 class="first">AI для .NET-розробника</h1>
+<p style="font-size:16pt">Том 6 · Додатки</p>
+<p style="font-size:13pt">Глосарій · Шпаргалки · Чеклісти</p></div>
+
+<h1>Додаток А. Повний глосарій</h1>
+<table>
+<tr><th>Термін</th><th>Пояснення</th></tr>
+<tr><td>Agent</td><td>LLM у циклі «думка → інструмент → результат», що виконує задачу автономно</td></tr>
+<tr><td>AGENTS.md</td><td>Відкритий формат файлу з інструкціями для AI-агентів у репозиторії</td></tr>
+<tr><td>Ask / Edit / Agent / Plan</td><td>Режими чату Copilot: відповідь / правка вибраних файлів / автономна робота / планування</td></tr>
+<tr><td>Auto-approve</td><td>Виконання дій агента без підтвердження людини</td></tr>
+<tr><td>Chain-of-thought</td><td>Покрокове міркування моделі</td></tr>
+<tr><td>Chunking</td><td>Розбиття документів на фрагменти для індексації</td></tr>
+<tr><td>CLAUDE.md</td><td>Файл інструкцій для Claude Code</td></tr>
+<tr><td>Cloud agent</td><td>Агент у хмарі, що з issue робить PR</td></tr>
+<tr><td>Compaction</td><td>Стиснення довгої історії для звільнення контексту</td></tr>
+<tr><td>Content exclusion</td><td>Налаштування, що забороняє Copilot використовувати певні файли</td></tr>
+<tr><td>Context window</td><td>Максимум токенів, які модель обробляє за раз</td></tr>
+<tr><td>copilot-instructions.md</td><td>Файл інструкцій Copilot для репозиторію (<code>.github/</code>)</td></tr>
+<tr><td>Custom agent (agent.md)</td><td>Збережена персона з інструкціями й набором інструментів</td></tr>
+<tr><td>Embedding</td><td>Числовий вектор, що кодує зміст тексту</td></tr>
+<tr><td>Evals</td><td>Автоматичні тести якості відповідей моделі</td></tr>
+<tr><td>Few-shot / Zero-shot</td><td>Запит з прикладами / без прикладів</td></tr>
+<tr><td>Fine-tuning</td><td>Донавчання моделі на власних даних</td></tr>
+<tr><td>Function / tool calling</td><td>Модель просить виконати функцію, програма виконує й повертає результат</td></tr>
+<tr><td>Галюцинація</td><td>Правдоподібна, але хибна відповідь</td></tr>
+<tr><td>Grounding</td><td>Опора відповіді на реальні джерела даних</td></tr>
+<tr><td>Guardrails</td><td>Обмеження й перевірки, що утримують AI в безпечних межах</td></tr>
+<tr><td>Hook</td><td>Скрипт на подію життєвого циклу агента</td></tr>
+<tr><td>Human-in-the-loop</td><td>Людина підтверджує важливі дії</td></tr>
+<tr><td>IChatClient</td><td>Абстракція чат-моделі в Microsoft.Extensions.AI</td></tr>
+<tr><td>Inference</td><td>Процес генерації відповіді навченою моделлю</td></tr>
+<tr><td>Instructions file</td><td>Постійні правила проєкту у Markdown</td></tr>
+<tr><td>Knowledge cutoff</td><td>Дата, після якої модель не має даних</td></tr>
+<tr><td>LLM</td><td>Велика мовна модель</td></tr>
+<tr><td>MCP</td><td>Model Context Protocol — стандарт підключення інструментів і даних до AI</td></tr>
+<tr><td>MCP server / client</td><td>Постачальник можливостей / споживач (AI-застосунок)</td></tr>
+<tr><td>Multimodal</td><td>Працює з текстом, зображеннями, іноді аудіо</td></tr>
+<tr><td>Ollama</td><td>Інструмент для локального запуску моделей</td></tr>
+<tr><td>Orchestration</td><td>Координація викликів моделей, інструментів і даних</td></tr>
+<tr><td>Premium request</td><td>Одиниця квоти в Copilot для потужніших моделей/режимів</td></tr>
+<tr><td>Progressive disclosure</td><td>Підвантаження деталей лише за потреби (як у skills)</td></tr>
+<tr><td>Prompt</td><td>Вхідний запит до моделі</td></tr>
+<tr><td>Prompt file</td><td>Збережений повторюваний промпт (<code>*.prompt.md</code>)</td></tr>
+<tr><td>Prompt injection</td><td>Атака через шкідливі інструкції у даних</td></tr>
+<tr><td>RAG</td><td>Пошук релевантних фрагментів + генерація з ними</td></tr>
+<tr><td>Rate limit</td><td>Ліміт запитів на проміжок часу</td></tr>
+<tr><td>Reasoning model</td><td>Модель, що міркує перед відповіддю</td></tr>
+<tr><td>Role prompting</td><td>Задання ролі моделі</td></tr>
+<tr><td>Semantic Kernel</td><td>SDK Microsoft для оркестрації AI в .NET</td></tr>
+<tr><td>Skill (SKILL.md)</td><td>Папка з процедурою і ресурсами, що агент підвантажує за описом</td></tr>
+<tr><td>Spec-driven development</td><td>Розробка від специфікації: вимоги → план → реалізація</td></tr>
+<tr><td>Streaming</td><td>Відповідь надходить частинами в реальному часі</td></tr>
+<tr><td>Structured output</td><td>Відповідь за суворою схемою (JSON)</td></tr>
+<tr><td>Subagent</td><td>Агент-помічник з окремим контекстом</td></tr>
+<tr><td>System prompt</td><td>Базові інструкції, що задають поведінку моделі</td></tr>
+<tr><td>Temperature</td><td>Параметр випадковості генерації</td></tr>
+<tr><td>Token</td><td>Мінімальна одиниця тексту моделі</td></tr>
+<tr><td>Top-p / top-k</td><td>Обмеження вибірки наступного токена</td></tr>
+<tr><td>Vector database</td><td>Сховище для пошуку за схожістю embeddings</td></tr>
+<tr><td>Vibe coding</td><td>Стиль розробки «за відчуттями», майже без читання коду; ризикований для серйозних проєктів</td></tr>
+<tr><td>Worktree (git)</td><td>Додаткова робоча копія репозиторію для паралельної роботи</td></tr>
+</table>
+
+<h1>Додаток Б. Шпаргалки</h1>
+
+<h2>Б.1. Куди який файл класти</h2>
+<table>
+<tr><th>Що</th><th>Шлях</th></tr>
+<tr><td>Загальні інструкції Copilot</td><td><code>.github/copilot-instructions.md</code></td></tr>
+<tr><td>Інструкції за маскою</td><td><code>.github/instructions/*.instructions.md</code> + <code>applyTo</code></td></tr>
+<tr><td>Інструкції для агентів (універсально)</td><td><code>AGENTS.md</code></td></tr>
+<tr><td>Інструкції Claude Code</td><td><code>CLAUDE.md</code></td></tr>
+<tr><td>Prompt files</td><td><code>.github/prompts/*.prompt.md</code></td></tr>
+<tr><td>Custom agents</td><td><code>.github/agents/*.agent.md</code></td></tr>
+<tr><td>Skills</td><td><code>.github/skills/&lt;ім'я&gt;/SKILL.md</code> (або <code>.claude/skills/</code>)</td></tr>
+<tr><td>Hooks</td><td>JSON-файл у <code>.github/hooks/</code> (за документацією продукту)</td></tr>
+<tr><td>MCP (VS Code)</td><td><code>.vscode/mcp.json</code></td></tr>
+<tr><td>Налаштування середовища cloud agent</td><td><code>.github/workflows/copilot-setup-steps.yml</code></td></tr>
+</table>
+<p>Шляхи й назви можуть змінюватися між версіями — перевіряйте документацію.</p>
+
+<h2>Б.2. Каркас промпта</h2>
+<pre>Роль:        Ти ...
+Задача:      Зроби ...
+Контекст:    .NET 9, [файли], [стек-трейс]
+Обмеження:   Не змінюй ..., без нових пакетів
+Формат:      Покажи ... коротко
+Перевірка:   Виконай dotnet build / dotnet test</pre>
+
+<h2>Б.3. Каркас issue для агента</h2>
+<pre>Що: ...
+Де: файли / компоненти
+Приймання: тести, збірка, документація
+Не чіпати: ...</pre>
+
+<h2>Б.4. Каркас SKILL.md</h2>
+<pre>---
+name: короткий-ідентифікатор
+description: Що робить і коли використовувати (ключові слова!)
+---
+# Назва
+1. Крок
+2. Крок
+Посилання на файли: templates/..., scripts/...</pre>
+
+<h2>Б.5. Корисні команди .NET для агента</h2>
+<table>
+<tr><th>Команда</th><th>Призначення</th></tr>
+<tr><td><code>dotnet build</code></td><td>Збірка</td></tr>
+<tr><td><code>dotnet test</code></td><td>Тести</td></tr>
+<tr><td><code>dotnet format</code></td><td>Форматування за EditorConfig</td></tr>
+<tr><td><code>dotnet list package --vulnerable</code></td><td>Вразливі залежності</td></tr>
+<tr><td><code>dotnet list package --outdated</code></td><td>Застарілі пакети</td></tr>
+<tr><td><code>dotnet ef migrations add Name</code></td><td>Нова міграція EF Core</td></tr>
+<tr><td><code>dotnet user-secrets set "Key" "Value"</code></td><td>Секрет для розробки</td></tr>
+</table>
+
+<h1>Додаток В. Чеклісти</h1>
+
+<h2>В.1. Старт нового проєкту з AI</h2>
+<ul>
+<li>☐ Git-репозиторій, гілка для експериментів</li>
+<li>☐ <code>.editorconfig</code>, аналізатори, nullable</li>
+<li>☐ <code>copilot-instructions.md</code> / <code>AGENTS.md</code> з командами збірки й тестів</li>
+<li>☐ CI: build + test + CodeQL/Dependabot</li>
+<li>☐ User Secrets для ключів; <code>.gitignore</code> перевірено</li>
+<li>☐ Захист основної гілки (PR + рев'ю)</li>
+</ul>
+
+<h2>В.2. Перед тим як прийняти код від AI</h2>
+<ul>
+<li>☐ Прочитав diff повністю</li>
+<li>☐ Збірка без попереджень, тести зелені</li>
+<li>☐ Усі API й пакети реально існують</li>
+<li>☐ Немає секретів і зайвих залежностей</li>
+<li>☐ Безпека: вхідні дані, авторизація, SQL</li>
+<li>☐ Розумію, як це працює, і зміг би пояснити колезі</li>
+</ul>
+
+<h2>В.3. Коли якість відповіді погана</h2>
+<ol>
+<li>Достатньо чи забагато контексту? Додайте потрібні файли / новий чат.</li>
+<li>Чіткий запит? Розділіть задачу, додайте приклади й обмеження.</li>
+<li>Є правила проєкту в інструкціях?</li>
+<li>Чи підходить модель? Спробуйте потужнішу або reasoning.</li>
+<li>Чи не застарілі знання? Додайте документацію (Learn MCP / посилання).</li>
+<li>Чи є перевірка (тести), що веде агента до правильного результату?</li>
+</ol>
+
+<h1>Додаток Г. Типові помилки новачків</h1>
+<table>
+<tr><th>Помилка</th><th>Як уникнути</th></tr>
+<tr><td>Копіювати код без розуміння</td><td>Просіть пояснення; пишіть складне самі</td></tr>
+<tr><td>Занадто загальні запити</td><td>Структура з розділу 4</td></tr>
+<tr><td>Нескінченні чати</td><td>Нова задача — новий чат</td></tr>
+<tr><td>Робота без git-гілки</td><td>Завжди окрема гілка й часті коміти</td></tr>
+<tr><td>Увімкнений auto-approve у важливому проєкті</td><td>Allow-list безпечних команд</td></tr>
+<tr><td>Секрети в промптах і репозиторії</td><td>User Secrets, Key Vault, secret scanning</td></tr>
+<tr><td>Довіра до «все готово»</td><td>Запустіть тести й перевірте самі</td></tr>
+<tr><td>Занадто довгі файли інструкцій</td><td>Короткі конкретні правила, path-specific файли</td></tr>
+<tr><td>Підключення випадкових MCP-серверів</td><td>Лише довірені, мінімальні права</td></tr>
+<tr><td>Ігнорування вартості</td><td>Дешевші моделі для простих задач, моніторинг квоти</td></tr>
+</table>
+
+<h1>Додаток Д. План навчання на 8 тижнів</h1>
+<table>
+<tr><th>Тиждень</th><th>Тема</th><th>Результат</th></tr>
+<tr><td>1</td><td>Том 1: основи, термінологія</td><td>Налаштований Copilot, TodoApi</td></tr>
+<tr><td>2</td><td>Том 2, розд. 4–5</td><td>Шаблони промптів; перша фіча з Agent</td></tr>
+<tr><td>3</td><td>Том 2, розд. 6; Том 3, розд. 7</td><td>Інструкції проєкту</td></tr>
+<tr><td>4</td><td>Том 3, розд. 8–9</td><td>Prompt files, skill, custom agent</td></tr>
+<tr><td>5</td><td>Том 4, розд. 10</td><td>Підключений MCP, перший власний MCP-сервер</td></tr>
+<tr><td>6</td><td>Том 4, розд. 11–12</td><td>Copilot CLI; завдання через cloud agent</td></tr>
+<tr><td>7</td><td>Том 5, розд. 13–14</td><td>Покриття тестами, security-рев'ю</td></tr>
+<tr><td>8</td><td>Том 5, розд. 15</td><td>Фінальний AI-проєкт на .NET</td></tr>
+</table>
+
+<h2>Корисні джерела</h2>
+<ul>
+<li>docs.github.com — розділ GitHub Copilot (актуальні функції, тарифи, інструкції)</li>
+<li>learn.microsoft.com — .NET, Microsoft.Extensions.AI, Semantic Kernel, Azure OpenAI</li>
+<li>modelcontextprotocol.io — специфікація MCP</li>
+<li>agents.md — формат AGENTS.md</li>
+<li>owasp.org — безпека веб-застосунків</li>
+</ul>
+<p><i>Підручник відображає стан на жовтень 2026 року; інструменти змінюються швидко — звіряйтеся з офіційною документацією.</i></p>
+</body></html>

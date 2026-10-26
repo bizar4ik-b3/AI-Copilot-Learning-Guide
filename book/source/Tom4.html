@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>AI для .NET — Том 4</title><link rel="stylesheet" href="style.css"></head><body>
+<div class="cover"><h1 class="first">AI для .NET-розробника</h1>
+<p style="font-size:16pt">Том 4 · Агенти й MCP</p>
+<p style="font-size:13pt">Розділи 10–12</p></div>
+
+<h1>Розділ 10. MCP — Model Context Protocol</h1>
+
+<h2>10.1. Проблема й рішення</h2>
+<p>Без стандарту кожен AI-клієнт мав би власну інтеграцію з GitHub, базами, браузером тощо. <b>MCP</b> — відкритий протокол, за яким <b>MCP-сервер</b> «виставляє» можливості, а <b>MCP-клієнт</b> (Copilot, Claude, Cursor…) їх використовує. Один сервер — багато клієнтів.</p>
+
+<h2>10.2. Що надає MCP-сервер</h2>
+<table>
+<tr><th>Примітив</th><th>Суть</th><th>Приклад</th></tr>
+<tr><td><b>Tools</b></td><td>Функції, які модель може викликати</td><td><code>create_issue</code>, <code>run_sql_query</code></td></tr>
+<tr><td><b>Resources</b></td><td>Дані для читання як контекст</td><td>Файл, схема БД, документ</td></tr>
+<tr><td><b>Prompts</b></td><td>Шаблони запитів сервера</td><td>«Проаналізуй лог»</td></tr>
+</table>
+<p>Найчастіше ви використовуватимете <b>tools</b>.</p>
+
+<h2>10.3. Транспорти</h2>
+<table>
+<tr><th>Тип</th><th>Як працює</th><th>Типово для</th></tr>
+<tr><td><b>stdio</b></td><td>Клієнт запускає локальний процес і говорить через стандартні потоки</td><td>Локальні інструменти (<code>npx</code>, <code>dotnet</code>, <code>docker</code>)</td></tr>
+<tr><td><b>HTTP (streamable HTTP; раніше SSE)</b></td><td>Віддалений сервер за URL, часто з OAuth</td><td>Хмарні сервіси (GitHub, Azure тощо)</td></tr>
+</table>
+
+<h2>10.4. Підключення</h2>
+<p>Конфігурація — JSON. У VS Code — <code>.vscode/mcp.json</code> (на рівні проєкту) або налаштування користувача; Visual Studio читає файл конфігурації MCP у рішенні/користувача; Copilot CLI — власний конфіг у домашній папці; Claude Code — <code>.mcp.json</code>. Точні шляхи й ключі звіряйте з документацією версії, яку використовуєте.</p>
+<pre>// приклад у стилі VS Code (.vscode/mcp.json)
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}</pre>
+<div class="box"><b>Ніколи</b> не клали токени прямо в JSON, що йде в git. Використовуйте prompts/inputs клієнта, змінні середовища або OAuth.</div>
+
+<h2>10.5. Корисні MCP-сервери для .NET-розробника</h2>
+<table>
+<tr><th>Сервер</th><th>Навіщо</th></tr>
+<tr><td>GitHub MCP</td><td>Issue, PR, пошук коду, Actions з чату</td></tr>
+<tr><td>Microsoft Learn / Docs MCP</td><td>Актуальна документація .NET та Azure — зменшує вигадки про API</td></tr>
+<tr><td>Playwright MCP</td><td>Керування браузером: перевірка UI вашого веб-застосунку</td></tr>
+<tr><td>Бази даних (SQL Server, PostgreSQL)</td><td>Дивитися схему, виконувати запити (краще read-only!)</td></tr>
+<tr><td>Azure MCP</td><td>Керування ресурсами Azure</td></tr>
+<tr><td>Власний сервер на C#</td><td>Інтеграція з вашою внутрішньою системою</td></tr>
+</table>
+
+<h2>10.6. Свій MCP-сервер на C#</h2>
+<p>Існує офіційний C# SDK (<code>ModelContextProtocol</code> у NuGet). Скелет — консольний застосунок із stdio-транспортом і атрибутами для інструментів:</p>
+<pre>// dotnet new console -n MyMcp ; dotnet add package ModelContextProtocol --prerelease ; dotnet add package Microsoft.Extensions.Hosting
+var builder = Host.CreateApplicationBuilder(args);
+builder.Services
+    .AddMcpServer()
+    .WithStdioServerTransport()
+    .WithToolsFromAssembly();
+await builder.Build().RunAsync();
+
+[McpServerToolType]
+public static class TimeTools
+{
+    [McpServerTool, Description("Повертає поточний UTC-час у форматі ISO 8601")]
+    public static string UtcNow() =&gt; DateTime.UtcNow.ToString("O");
+}</pre>
+<p>API SDK активно змінюється — під час практики перевіряйте офіційний README та приклади.</p>
+
+<h2>10.7. Безпека MCP</h2>
+<ul>
+<li>MCP-сервер виконує код або має доступ до даних — ставте лише довірені, дивіться першоджерело.</li>
+<li>Принцип мінімальних прав: токени з обмеженим scope, БД лише для читання.</li>
+<li>Вибірково вмикайте інструменти; менше інструментів — менше плутанини й ризику.</li>
+<li><b>Prompt injection через дані:</b> вміст з issue чи веб-сторінки може містити приховані команди для агента.</li>
+<li>Багато інструментів з'їдають контекст: описи всіх tools додаються до кожного запиту.</li>
+</ul>
+
+<div class="task"><b>Завдання 10.</b> Підключіть GitHub MCP (або Microsoft Learn MCP) у вашому IDE. Попросіть: «Покажи останні 3 коміти репозиторію AI-Copilot-Learning-Guide» або «Згідно з документацією, як налаштувати Rate Limiting в ASP.NET Core?».</div>
+
+<h1>Розділ 11. Агентна робота та Copilot CLI</h1>
+
+<h2>11.1. Цикл агента</h2>
+<pre>Задача → [ Думка → Виклик інструмента → Результат ] × N → Відповідь
+Інструменти: читання/пошук файлів, редагування, термінал, MCP, веб-пошук</pre>
+<p>Агент сам коригує дії за результатами: збірка впала → читає помилку → правка → ще раз збирає. Тому критично, щоб у проєкті була <b>перевірка</b>, за якою агент розуміє «готово»: збірка, тести, лінтер.</p>
+
+<h2>11.2. Як ставити задачі агенту</h2>
+<table>
+<tr><th>Елемент</th><th>Приклад</th></tr>
+<tr><td>Ціль</td><td>«Додати фільтрацію /todos?isDone=true»</td></tr>
+<tr><td>Критерії готовності</td><td>«dotnet build без попереджень, нові тести проходять, Swagger оновлено»</td></tr>
+<tr><td>Межі</td><td>«Не чіпати Migrations та AuthController»</td></tr>
+<tr><td>Підказки</td><td>«Дивись, як зроблено фільтр у /projects»</td></tr>
+</table>
+<p>Робота у стилі <b>spec-driven</b>: спершу короткий опис вимог у Markdown (<code>docs/spec-xxx.md</code>), агент уточнює питання, складає план, і лише потім реалізує. Це різко підвищує якість для великих фіч.</p>
+
+<h2>11.3. Copilot CLI</h2>
+<p><b>GitHub Copilot CLI</b> — агент у терміналі. Працює в поточній директорії, читає код, виконує команди, редагує файли, підтримує інструкції (<code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>), MCP, skills і custom agents. Встановлення й команди — за актуальною документацією GitHub (зазвичай через npm, WinGet чи інший менеджер пакетів; потрібна активна підписка Copilot).</p>
+<pre>cd C:\src\TodoApi
+copilot            # запустити інтерактивну сесію
+&gt; Знайди всі місця без CancellationToken і запропонуй план виправлення
+&gt; /help</pre>
+<table>
+<tr><th>Корисне</th><th>Опис</th></tr>
+<tr><td>Slash-команди</td><td>Керування сесією, моделлю, контекстом, MCP (список — <code>/help</code>)</td></tr>
+<tr><td>Режим плану</td><td>Спочатку обговорення плану, потім виконання</td></tr>
+<tr><td>Дозволи</td><td>Запитує дозвіл на команди й шляхи; можна обмежити allow/deny-списками</td></tr>
+<tr><td>Скрипти</td><td>Неінтерактивний запуск для автоматизації (див. <code>copilot --help</code>)</td></tr>
+</table>
+
+<h2>11.4. Паралельна й багатоагентна робота</h2>
+<ul>
+<li><b>Субагенти:</b> дослідження/рев'ю в окремому контексті.</li>
+<li><b>Git worktrees:</b> кілька агентів працюють над різними задачами в окремих копіях репозиторію без конфліктів.</li>
+<li><b>Правило:</b> паралельте <i>незалежні</i> задачі; залежні — по черзі.</li>
+</ul>
+
+<h2>11.5. Контроль якості роботи агента</h2>
+<ol>
+<li>Читайте diff, не тільки підсумок агента (він може бути надто оптимістичним).</li>
+<li>Запускайте тести самостійно.</li>
+<li>Просіть самоперевірку: «Що ти не перевірив? Які ризики?».</li>
+<li>Для критичного коду — друга пара очей (людина або агент-рев'юер).</li>
+</ol>
+
+<div class="task"><b>Завдання 11.</b> Встановіть Copilot CLI. У проєкті TodoApi дайте задачу з чіткими критеріями готовності, дозвольте лише <code>dotnet build</code>/<code>dotnet test</code>. Оцініть результат за списком 11.5.</div>
+
+<h1>Розділ 12. Cloud agent: від issue до Pull Request</h1>
+
+<h2>12.1. Що це</h2>
+<p><b>Copilot cloud agent</b> (раніше «coding agent») працює у хмарі GitHub: ви призначаєте йому issue або ставите задачу в чаті, він створює гілку в ізольованому середовищі, вносить зміни, запускає збірку/тести й відкриває <b>Pull Request</b> для вашого рев'ю. Ви не чекаєте — це фонова робота.</p>
+
+<h2>12.2. Коли ефективний</h2>
+<table>
+<tr><th>Підходить</th><th>Не підходить</th></tr>
+<tr><td>Невеликі чітко описані баги й фічі</td><td>Розмиті вимоги</td></tr>
+<tr><td>Додати тести, оновити документацію</td><td>Архітектурні рішення з нуля</td></tr>
+<tr><td>Рутинні міграції, чистка техборгу</td><td>Задачі, потрібні секрети/прод-доступ</td></tr>
+</table>
+
+<h2>12.3. Як підготувати репозиторій</h2>
+<ul>
+<li><b>copilot-instructions.md / AGENTS.md</b> з командами збірки й тестів.</li>
+<li><b>Файл налаштування середовища</b> (<code>.github/workflows/copilot-setup-steps.yml</code>): що встановити перед стартом агента — .NET SDK, залежності.</li>
+<li><b>CI на PR</b> (GitHub Actions) — агент і ви бачите результат перевірок.</li>
+<li><b>Захист гілок</b>: обов'язкове рев'ю, щоб агент не міг злити сам.</li>
+</ul>
+<pre># .github/workflows/copilot-setup-steps.yml (спрощено)
+name: "Copilot Setup Steps"
+on: workflow_dispatch
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - run: dotnet restore</pre>
+
+<h2>12.4. Робочий цикл</h2>
+<ol>
+<li>Створіть issue: опис, критерії приймання, посилання на файли.</li>
+<li>Призначте Copilot (Assignee) або делегуйте з чату/IDE.</li>
+<li>Агент відкриває draft PR і пише логи роботи.</li>
+<li>Ви рев'юїте, залишаєте коментарі — агент відповідає правками.</li>
+<li>Перевіряєте CI, зливаєте самі.</li>
+</ol>
+
+<h2>12.5. Гарні issue для агента</h2>
+<pre>Заголовок: Додати фільтр isDone в GET /todos
+Опис: параметр ?isDone=true|false; без параметра — усі.
+Приймання: - тести в tests/TodoApi.Tests/TodoEndpointsTests.cs
+           - оновлено README (розділ API)
+           - dotnet build/test без помилок
+Не чіпати: Migrations/</pre>
+
+<h2>12.6. Безпека й контроль</h2>
+<ul>
+<li>Агент працює під обмеженими правами й у пісочниці з обмеженим мережевим доступом (налаштовується).</li>
+<li>Його PR не мають самозатверджуватися; завжди людина-рев'юер.</li>
+<li>Слідкуйте за витратою квот; задачі краще робити невеликими.</li>
+<li>Не пишіть у issue секрети — їх читатиме агент і історія.</li>
+</ul>
+
+<div class="task"><b>Завдання 12.</b> У репозиторії зі своїм TodoApi створіть issue за зразком 12.5 і делегуйте cloud agent (якщо доступно за вашим тарифом). Перегляньте PR, залиште два коментарі.</div>
+
+<div class="box"><b>Далі — Том 5:</b> практика .NET: тести, рефакторинг, безпека та власні AI-застосунки.</div>
+</body></html>

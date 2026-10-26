@@ -1,0 +1,19 @@
+﻿
+@page { size: A4; margin: 20mm 18mm; }
+body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1b1b1b; }
+h1 { font-size: 24pt; color: #0b3d91; border-bottom: 3px solid #0b3d91; padding-bottom: 6px; page-break-before: always; }
+h1.first { page-break-before: auto; }
+h2 { font-size: 15pt; color: #0b3d91; margin-top: 22px; }
+h3 { font-size: 12pt; color: #333; }
+code, pre { font-family: Consolas, monospace; font-size: 9.5pt; }
+code { background: #eef1f6; padding: 1px 4px; border-radius: 3px; }
+pre { background: #f4f6fa; border-left: 4px solid #0b3d91; padding: 8px 10px; white-space: pre-wrap; page-break-inside: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; page-break-inside: avoid; }
+th, td { border: 1px solid #b9c2d3; padding: 5px 8px; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #e3e9f5; }
+.box { background: #fff8e1; border-left: 4px solid #f0a500; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.tip { background: #e8f6ec; border-left: 4px solid #2e9e50; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.task { background: #eaf2ff; border-left: 4px solid #0b3d91; padding: 8px 12px; margin: 12px 0; page-break-inside: avoid; }
+.cover { text-align: center; margin-top: 90mm; }
+.cover h1 { border: none; font-size: 32pt; page-break-before: auto; }
+
